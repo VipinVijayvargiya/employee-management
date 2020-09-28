@@ -1,0 +1,12 @@
+.loader-wrapper {
+  text-align: center;
+  height: calc(100vh - 128px);
+  position: relative;
+  .loader-logo{
+    width: 100px;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%) translateX(-50%);
+  }
+}

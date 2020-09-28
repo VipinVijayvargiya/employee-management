@@ -1,0 +1,5 @@
+export const GET_EMPLOYEE_DATA = "GET_EMPLOYEE_DATA";
+export const API_CALL_BEGIN = "API_CALL_BEGIN";
+export const API_CALL_DONE = "API_CALL_DONE";
+
+

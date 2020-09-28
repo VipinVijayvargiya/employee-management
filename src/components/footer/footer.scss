@@ -1,0 +1,18 @@
+$breakpoints: (
+  'small': 768px,
+  'medium': 1024px,
+  'large': 1200px,
+  'xlarge': 1440px
+) !default;
+
+.footer-wrapper{
+    position: fixed;
+    bottom: 0;
+    right: 18px;
+    z-index: 1;
+    @media screen and (min-width: map-get($map: $breakpoints, $key: medium)) {   
+        p{
+            text-align: right;
+        }
+    }
+}
