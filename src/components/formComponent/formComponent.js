@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import './onboard.scss';
+import './formComponent.scss';
 import { onboardNewEmployee } from "../../redux/actions";
+import { Link } from "react-router-dom";
 
 import { Button, InputAdornment, InputLabel, OutlinedInput, TextField, FormControl } from '@material-ui/core';
 
-class Onboard extends Component {
+class FormComponent extends Component {
     
     componentDidMount() {
        // if any error history.push('/');
@@ -32,13 +33,26 @@ class Onboard extends Component {
     //     console.log('End')
     // }
 
-    formSubmit=async _=>{
-        this.props.onboardNewEmployee();
-        console.log('submit');
+    // formSubmit=async _=>{
+    //     this.props.onboardNewEmployee();
+    //     console.log('submit');
         
+    // }
+
+    formSubmit=()=>{
+
     }
 
     render() {
+        console.log(this.props);
+        const {action, employeeDatail} = this.props;
+        const {employee_name, employee_salary, employee_age} = employeeDatail || {};
+        const isFormOnly = employeeDatail && action==='Details' && Object.keys(employeeDatail).length > 0;
+        const customButton = (
+            <Button variant="contained" color="secondary" onClick={()=> this.formSubmit(isFormOnly)}>
+                {isFormOnly ? `Go Back` : `Submit`}
+            </Button>
+        )
         return (
             <div className="add-employee-wrapper">
                 <form noValidate autoComplete="off" className="add-emp-form">
@@ -48,7 +62,8 @@ class Onboard extends Component {
                                 error
                                 id="outlined-error-helper-text"
                                 label="Name"
-                                defaultValue=""
+                                disabled={isFormOnly}
+                                defaultValue={employee_name}
                                 helperText="Incorrect entry."
                                 variant="outlined"
                                 onChange={(e)=>this.handleChange('Name', e)}
@@ -59,7 +74,8 @@ class Onboard extends Component {
                             <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-amount"
-                                
+                                disabled={isFormOnly}
+                                defaultValue={employee_salary}
                                 onChange={()=>this.handleChange('amount')}
                                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                 labelWidth={60}
@@ -71,16 +87,22 @@ class Onboard extends Component {
                                 error
                                 id="outlined-error-helper-text"
                                 label="Age"
-                                defaultValue=""
+                                disabled={isFormOnly}
+                                defaultValue={employee_age}
                                 helperText="Incorrect entry."
                                 variant="outlined"
                             />
                         </FormControl>
                     </div>
                     <div className="form-button--spacing">
-                        <Button variant="contained" color="secondary" onClick={()=> this.formSubmit()}>
-                            Submit
-                        </Button>
+                        {isFormOnly ? (
+                            <Link to={`/`} className="button-with-link">
+                                {customButton}
+                            </Link>
+                        ) : <div>
+                            {customButton}
+                        </div>}
+                        
                     </div>
                 </form>
             </div>
@@ -100,4 +122,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Onboard);
+)(FormComponent);
