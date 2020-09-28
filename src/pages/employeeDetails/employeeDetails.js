@@ -3,12 +3,14 @@ import { connect } from "react-redux";
 import './employeeDatails.scss';
 import { getEmployeeData } from "../../redux/actions";
 import Loader from '../../components/loader/loader';
+import FormComponent  from '../../components/formComponent/formComponent';
 
 class employeeDatails extends Component {
 
     componentDidMount() {
         const { getEmployeeData, match: { params } } = this.props;
-        getEmployeeData(params.id);
+        const paramData = params.id.split(':');
+        getEmployeeData(paramData[0]);
     }
  
     handleChangeLocation = () => {
@@ -16,16 +18,14 @@ class employeeDatails extends Component {
         history.push('/');
     }
     render () {
-        const {employeeDatail, isLoading} = this.props;
+
+        const {employeeDatail, isLoading, match: { params } } = this.props;
         
         return (
             <div className="test-class">
               {
                 isLoading ? <Loader /> : (
-                  <div>
-                    <span className="change-selection" onClick={this.handleChangeLocation}>change selection</span>
-                    <div>{employeeDatail && employeeDatail.employee_name}</div>
-                  </div>
+                  <FormComponent action={params ? params.action : ''} employeeDatail={employeeDatail} />
                 )
               }
                 
@@ -39,7 +39,7 @@ class employeeDatails extends Component {
 const mapStateToProps = state => {
     return {
       isLoading: state.app.isLoading,
-      employeeDatails: state.app.employeeDatails
+      employeeDatail: state.app.employeeDatail
     };
   };
   const mapDispatchToProps = {

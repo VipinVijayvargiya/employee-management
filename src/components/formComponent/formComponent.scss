@@ -8,7 +8,9 @@ $breakpoints: (
 .add-employee-wrapper{
     padding: 24px;
     .add-emp-form{
-        
+        .button-with-link{
+            text-decoration: inherit;
+        }
         .form-control--spacing, .form-button--spacing{
             padding: 10px;
             margin-bottom: 14px;

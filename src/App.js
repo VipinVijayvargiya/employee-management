@@ -124,7 +124,7 @@ function App() {
             <Paper>
             <Switch>
               <Route path="/" exact render={()=><EmployeeList classes={classes}/>} />
-              <Route path="/employeeDetails/:id" exact component={EmployeeDetails} />
+              <Route path="/employeeDetails/:id/:action" exact component={EmployeeDetails} />
               <Route path="/onboarding/" exact component={Onboard} />
               <Route path="/payroll/" exact component={PayrollRecord} />
 
