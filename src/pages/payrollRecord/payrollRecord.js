@@ -13,7 +13,7 @@ class PayrollRecord extends Component {
     render() {
         const {employeeData} = this.props;
         const total_number_of_emp = employeeData ? employeeData.length : 0;
-        let employee_total_salary = employeeData ? employeeData.map(emp => emp.employee_salary).reduce((prev, next) => prev + next) : 0;
+        let employee_total_salary = employeeData ? employeeData.map(emp => Number(emp.employee_salary)).reduce((prev, next) => prev + next) : 0;
 
         return (
             <div>
