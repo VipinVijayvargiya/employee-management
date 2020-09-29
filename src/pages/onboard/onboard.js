@@ -1,37 +1,16 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import './onboard.scss';
+import FormComponent  from '../../components/formComponent/formComponent';
 
 class Onboard extends Component {
-    
-    componentDidMount() {
-       // if any error history.push('/');
-    }
-    
-    goBack() {
-        const { history } = this.props;
-        history.goBack();
-    }
 
     render() {
+        const {match: { params } } = this.props;
         return (
             <div className="add-employee-wrapper">
-                On board
+                <FormComponent action={params ? params.action : ''} />
             </div>
         )
     }
 }
-const mapStateToProps = state => {
-    return {
-        isLoading: state.app.isLoading
-    };
-};
-
-const mapDispatchToProps = {
-
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Onboard);
+export default Onboard;

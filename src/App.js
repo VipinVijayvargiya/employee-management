@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
-// Additions import
+// Additional import
 import clsx from 'clsx';
 import {AppBar, Box, CssBaseline, Container, Divider, Drawer, IconButton, ListItem, ListItemIcon, ListItemText, ListSubheader, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Assignment, ChevronLeft, Group, Menu, AddCircleOutline, Payment, AddIcCall} from '@material-ui/icons';
@@ -16,7 +16,7 @@ import PayrollRecord from "./pages/payrollRecord/payrollRecord";
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 
-import {useStyles} from './common-utlity/index.js';
+import {useStyles} from './common-utility/index.js';
 import './App.scss';
 
 function App() {
@@ -58,94 +58,88 @@ function App() {
           </Toolbar>
         </AppBar>
         <Router>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-          }}
-          open={open}
-        >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeft />
-            </IconButton>
-          </div>
-          <Divider />
-            <Link to="/">
-              <ListItem button>
-                <ListItemIcon>
-                  <Group />
-                </ListItemIcon>
-                <ListItemText primary="Employees" />
-              </ListItem>
-            </Link>
-            <Link to="/onboarding">
-              <ListItem button>
-                <ListItemIcon>
-                  <AddCircleOutline />
-                </ListItemIcon>
-                <ListItemText primary="Onboard" />
-              </ListItem>
-            </Link>
-            <Link to="/payroll">
-              <ListItem button>
-                <ListItemIcon>
-                  <Payment />
-                </ListItemIcon>
-                <ListItemText primary="Payroll" />
-              </ListItem>
-            </Link>
-            <Divider />
-            <div className="sidebar-footer">
-              <ListSubheader inset>Contact Us</ListSubheader>
-              <a href="tel:+4915124403260">
-                <ListItem button>
-                  <ListItemIcon>
-                    <AddIcCall />
-                  </ListItemIcon>
-                  <ListItemText primary="predictions" />
-                </ListItem>
-              </a>
-              <a href="mailto: vipinvijayvargiya@gmail.com">
-                <ListItem button>
-                  <ListItemIcon>
-                    <Assignment />
-                  </ListItemIcon>
-                  <ListItemText primary="products" />
-                </ListItem>
-              </a>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+            }}
+            open={open}
+          >
+            <div className={classes.toolbarIcon}>
+              <IconButton onClick={handleDrawerClose}>
+                <ChevronLeft />
+              </IconButton>
             </div>
-          
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
+            <Divider />
+              <Link to="/">
+                <ListItem button>
+                  <ListItemIcon>
+                    <Group />
+                  </ListItemIcon>
+                  <ListItemText primary="Employees" />
+                </ListItem>
+              </Link>
+              <Link to="/onboarding">
+                <ListItem button>
+                  <ListItemIcon>
+                    <AddCircleOutline />
+                  </ListItemIcon>
+                  <ListItemText primary="Onboard" />
+                </ListItem>
+              </Link>
+              <Link to="/payroll">
+                <ListItem button>
+                  <ListItemIcon>
+                    <Payment />
+                  </ListItemIcon>
+                  <ListItemText primary="Payroll" />
+                </ListItem>
+              </Link>
+              <Divider />
+              <div className="sidebar-footer">
+                <ListSubheader inset>Contact Us</ListSubheader>
+                <a href="tel:+4915124403260">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <AddIcCall />
+                    </ListItemIcon>
+                    <ListItemText primary="predictions" />
+                  </ListItem>
+                </a>
+                <a href="mailto: vipinvijayvargiya@gmail.com">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <Assignment />
+                    </ListItemIcon>
+                    <ListItemText primary="products" />
+                  </ListItem>
+                </a>
+              </div>
+            
+          </Drawer>
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
 
-          <Container maxWidth="lg" className={`main-container ${classes.container}`}>
-            <Paper>
-            <Switch>
-              <Route path="/" exact render={()=><EmployeeList classes={classes}/>} />
-              <Route path="/employeeDetails/:id" exact component={EmployeeDetails} />
-              <Route path="/onboarding/" exact component={Onboard} />
-              <Route path="/payroll/" exact component={PayrollRecord} />
+            <Container maxWidth="lg" className={`main-container ${classes.container}`}>
+              <Paper>
+              <Switch>
+                <Route path="/" exact render={()=><EmployeeList classes={classes}/>} />
+                <Route path="/employeeDetails/:id/:action" exact component={EmployeeDetails} />
+                <Route path="/onboarding/" exact component={Onboard} />
+                <Route path="/payroll/" exact component={PayrollRecord} />
 
-              <Route path="/predictions/" exact component={Onboard} />
-              <Route path="/products/" exact component={EmployeeDetails} />
-            </Switch>
-            </Paper>
-            <Box pt={4}>
-              <Footer />
-            </Box>
-          </Container>
-        </main>
-        
+                <Route path="/predictions/" exact component={Onboard} />
+                <Route path="/products/" exact component={EmployeeDetails} />
+              </Switch>
+              </Paper>
+              <Box pt={4}>
+                <Footer />
+              </Box>
+            </Container>
+          </main>
         </Router>
-        
-
       </Provider>
     </div>
-    
-
-    
   );
 }
 
