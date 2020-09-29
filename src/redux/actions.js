@@ -2,18 +2,60 @@ import axios from "axios";
 import {
   API_CALL_BEGIN,
   API_CALL_DONE,
-  API_FAILURE
+  API_CALL_FAILURE,
+  CLEAR_INPUT_FIELDS,
+  ONBOARD_NEW_EMPLOYEE
 } from "./actionTypes";
 
+const apiCallBegin = (index) => {
+  return {
+    type: API_CALL_BEGIN,
+    payload: { index }
+  };
+};
+
+const apiCallDone = (data) => {
+  return {
+    type: API_CALL_DONE,
+    payload: data.data
+  };
+};
+
+const apiFailure = (e) => {
+  return {
+    type: API_CALL_FAILURE,
+    payload: e
+  };
+};
+
+export const clearInputFields=()=>{
+  return async (dispatch) => {
+    dispatch({
+      type: CLEAR_INPUT_FIELDS,
+      payload: {}
+    });
+  }
+}
+
+const getEmpDataFromSession = (dataFromSession, id) =>{
+  const sessionDataObj = JSON.parse(dataFromSession);
+  if(id && dataFromSession=== null){
+    window.location.href = 'http://localhost:3000';
+    return;
+  }
+  if(dataFromSession){
+    return id ? {data: sessionDataObj.data.filter((obj)=>{return obj.id===Number(id)})[0]} : sessionDataObj;
+  }
+  return null;
+}
 
 export const getEmployeeData = (id) => {
   return async (dispatch) => {
     dispatch(apiCallBegin());
     const dataFromSession = sessionStorage.getItem('allEmpRecords');
-    const datatoPass = JSON.parse(dataFromSession);
-    
-    if(dataFromSession === null || id){
-      console.log(111111111111)
+    const datatoPass = await getEmpDataFromSession(dataFromSession, id);
+
+    if(dataFromSession === null){
       try {
         let response = await axios({
           method: 'GET',
@@ -30,8 +72,6 @@ export const getEmployeeData = (id) => {
         dispatch(apiFailure(e));
       }
     }else{
-      console.log(2222222222222)
-      console.log(datatoPass)
       dispatch(apiCallDone(
         datatoPass
       ));
@@ -39,50 +79,11 @@ export const getEmployeeData = (id) => {
   }
 }
 
-const apiFailure = (e) => {
-  return {
-    type: API_FAILURE,
-    payload: e
-  };
-};
-
-export const onboardNewEmployee = () =>{
+export const onboardNewEmployee = (e) =>{
   return async (dispatch) => {
-    dispatch(apiCallBegin());
-    try {
-
-      let data = {"name":"vip","salary":"123","age":"23"};
-
-      let response = await axios({
-        method: 'POST',
-        data: data,
-        "Access-Control-Allow-Origin": "*",
-        headers:{},
-        url: `https://dummy.restapiexample.com/api/v1/delete`,
-      });
-      console.log(response);
-      // dispatch(uploadPhotoSuccess(
-      //   index,
-      //   response.data.predictions
-      // ));
-
-    } catch (e) {
-      console.warn(e);
-      // dispatch(uploadPhotoFail(index));
-    }
-  };
+    dispatch({
+      type: ONBOARD_NEW_EMPLOYEE,
+      payload: e
+    });
+  }
 }
-
-const apiCallBegin = (index) => {
-  return {
-    type: API_CALL_BEGIN,
-    payload: { index }
-  };
-};
-
-const apiCallDone = (data) => {
-  return {
-    type: API_CALL_DONE,
-    payload: data.data
-  };
-};

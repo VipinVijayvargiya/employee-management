@@ -13,9 +13,7 @@ const Header = (props) => {
 
 const mapStateToProps = state => {
   return {
-    isLoading: state.app.isLoading,
-    badge: state.app.badge,
-    employeeData: state.app.employeeData
+    badge: state.app.badge
   };
 };
 const mapDispatchToProps = {

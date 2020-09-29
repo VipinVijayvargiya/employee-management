@@ -25,7 +25,6 @@ class PayrollRecord extends Component {
 }
 const mapStateToProps = state => {
     return {
-        isLoading: state.app.isLoading,
         employeeData: state.app.employeeData
     };
 };

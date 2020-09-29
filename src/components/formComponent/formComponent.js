@@ -1,108 +1,101 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import './formComponent.scss';
-import { onboardNewEmployee } from "../../redux/actions";
+import * as componentList from './ComponentImport'
+import { clearInputFields, onboardNewEmployee } from "../../redux/actions";
 import { Link } from "react-router-dom";
-
-import { Button, InputAdornment, InputLabel, OutlinedInput, TextField, FormControl } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 class FormComponent extends Component {
-    
-    componentDidMount() {
-       // if any error history.push('/');
-    }
-    
-    goBack() {
-        const { history } = this.props;
-        history.goBack();
+
+    componentDidMount(){
+        if(!this.props.action){
+            this.props.clearInputFields();
+        }
     }
 
-    handleChange=(name, event) => {
-        console.log(name, event.target.value);
+    handleChange=(e) => {
+        const {name, value} = e.target;
+        this.props.onboardNewEmployee({name, value});
     }
 
-    // forLoop = async _ => {
-    //     console.log('Start')
-    //     const { uploadPhoto, photos } = this.props;
-    //     let promises = [];
-    //     for (let i in photos)
-    //         promises.push(uploadPhoto(i, photos[i]));
-    //     await Promise.all(promises);
-    //     this.setState({ isPredicting: false });
-    //     this.calculateAnswers();
-    //     console.log('End')
-    // }
-
-    // formSubmit=async _=>{
-    //     this.props.onboardNewEmployee();
-    //     console.log('submit');
-        
-    // }
-
-    formSubmit=()=>{
-
+    formSubmit=(isReadOnly)=>{
+        if(!isReadOnly ){
+            const {employeeDatail, empToOnboard} = this.props;
+            let ExistingRecord = JSON.parse(sessionStorage.getItem('allEmpRecords')).data;
+            let generatedId;
+            if(employeeDatail && employeeDatail.id){
+                ExistingRecord = ExistingRecord.map(emp =>
+                    emp.id === employeeDatail.id ? { ...emp, ...empToOnboard } : emp
+                );
+            }
+            else{
+                generatedId = Math.max.apply(null, ExistingRecord.map(item => item.id))+1;
+                ExistingRecord.push({...empToOnboard, id:generatedId});
+            }
+            sessionStorage.setItem('allEmpRecords', JSON.stringify({data: ExistingRecord}));
+        }
     }
 
     render() {
-        console.log(this.props);
-        const {action, employeeDatail} = this.props;
-        const {employee_name, employee_salary, employee_age} = employeeDatail || {};
-        const isFormOnly = employeeDatail && action==='Details' && Object.keys(employeeDatail).length > 0;
-        const customButton = (
-            <Button variant="contained" color="secondary" onClick={()=> this.formSubmit(isFormOnly)}>
-                {isFormOnly ? `Go Back` : `Submit`}
-            </Button>
-        )
+        const {action, employeeDatail, empToOnboard, errorData} = this.props;
+        const {employee_name, employee_salary, employee_age} = action ? empToOnboard : {};
+        const isReadOnly = employeeDatail && action==='Details' && Object.keys(employeeDatail).length > 0;
+        const isButtonDisabled = action!=='Edit' ? Object.keys(empToOnboard).length < 3 || errorData.length > 0 : errorData.length > 0 || false;
+        const formData = [
+            {
+                type: 'normal',
+                property: {
+                    id: 'employee_name',
+                    label: 'Employee Name',
+                    defaultValue: employee_name,
+                    disabled: isReadOnly,
+                    error: errorData.indexOf('employee_name') >= 0
+                },
+                helperText: 'Please Enter valid name, also should be containing minimum three letters !'
+            },
+            {
+                type: 'amount',
+                property: {
+                    id: 'employee_salary',
+                    label: 'Salary',
+                    defaultValue: employee_salary,
+                    disabled: isReadOnly,
+                    error: errorData.indexOf('employee_salary') >= 0
+                },
+                helperText: 'Please Enter valid salary, also should be minimum is four digit and maximum 6 digits !',
+            },
+            {
+                type: 'normal',
+                property: {
+                    id: 'employee_age',
+                    label: 'Employee Age',
+                    defaultValue: employee_age,
+                    disabled: isReadOnly,
+                    error: errorData.indexOf('employee_age') >= 0
+                },
+                helperText: 'Please Enter valid Age! greater than 18 and less than 67 years!'
+            }
+        ];
         return (
-            <div className="add-employee-wrapper">
+            <div className="employee-form-wrapper">
                 <form noValidate autoComplete="off" className="add-emp-form">
                     <div className="form-control-parent">
-                        <FormControl fullWidth variant="outlined" className="form-control--spacing">
-                            <TextField
-                                error
-                                id="outlined-error-helper-text"
-                                label="Name"
-                                disabled={isFormOnly}
-                                defaultValue={employee_name}
-                                helperText="Incorrect entry."
-                                variant="outlined"
-                                onChange={(e)=>this.handleChange('Name', e)}
+                        {formData.map((control, index)=>{
+                            const CustomTag = componentList[control.type === 'amount' ? `AmountBox` : `TextBox`]
+                            return <CustomTag
+                                key={`control-${index}`}
+                                {...control}
+                                handleChange={(e)=>this.handleChange(e)}
                             />
-                        </FormControl>
-                        
-                        <FormControl fullWidth variant="outlined" className="form-control--spacing">
-                            <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-amount"
-                                disabled={isFormOnly}
-                                defaultValue={employee_salary}
-                                onChange={()=>this.handleChange('amount')}
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                labelWidth={60}
-                            />
-                        </FormControl>
-                        
-                        <FormControl fullWidth variant="outlined" className="form-control--spacing">
-                            <TextField
-                                error
-                                id="outlined-error-helper-text"
-                                label="Age"
-                                disabled={isFormOnly}
-                                defaultValue={employee_age}
-                                helperText="Incorrect entry."
-                                variant="outlined"
-                            />
-                        </FormControl>
+                        })}
                     </div>
                     <div className="form-button--spacing">
-                        {isFormOnly ? (
-                            <Link to={`/`} className="button-with-link">
-                                {customButton}
-                            </Link>
-                        ) : <div>
-                            {customButton}
-                        </div>}
-                        
+                        <Link to={`/`} className="button-with-link" onClick={()=> this.formSubmit(isReadOnly)}>
+                            <Button variant="contained" color="secondary" disabled={isReadOnly ? !isReadOnly : isButtonDisabled}>
+                                {isReadOnly ? `Go Back` : `Submit`}
+                            </Button>
+                        </Link>
                     </div>
                 </form>
             </div>
@@ -111,11 +104,13 @@ class FormComponent extends Component {
 }
 const mapStateToProps = state => {
     return {
-        isLoading: state.app.isLoading
+        empToOnboard:state.app.empToOnboard,
+        errorData: state.app.errorData
     };
 };
 
 const mapDispatchToProps = {
+    clearInputFields,
     onboardNewEmployee
 };
 

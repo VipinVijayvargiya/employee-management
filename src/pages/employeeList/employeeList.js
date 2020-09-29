@@ -74,7 +74,6 @@ class EmployeeList extends Component {
             </div>
           </div>
         ) : <Loader />}
-        
       </div>
     );
   }

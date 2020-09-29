@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
     toolbar: {
-      paddingRight: 24, // keep right padding when drawer closed
+      paddingRight: 24, // right padding if drawer closed
     },
     toolbarIcon: {
       display: 'flex',
@@ -80,10 +80,7 @@ export const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const globalTrim = (str)=> {
-    return str ? str.replace(/^\s+|\s+$/g, '') : str;
-}
+
 export default {
-    useStyles: useStyles,
-    globalTrim: globalTrim
+    useStyles: useStyles
 };
