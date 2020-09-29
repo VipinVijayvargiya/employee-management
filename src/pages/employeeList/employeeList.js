@@ -47,7 +47,7 @@ class EmployeeList extends Component {
                 <tbody>
                   {employeeData.map((emp, index)=>{
                     const {id, employee_name, employee_salary, employee_age} = emp;
-                    employee_total_salary +=employee_salary;
+                    employee_total_salary += Number(employee_salary);
                     return (
                       <tr key={`emp-${index}`} >
                         <td className="action-Cell">
