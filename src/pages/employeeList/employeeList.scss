@@ -34,4 +34,11 @@
         }
     }
     tr:nth-child(even){background-color: $table-zebra-strip}
+    .payment-details-section{
+        .summary-outline--hidden{
+            &:focus{
+                outline: none;
+            }
+        }
+    }
 }

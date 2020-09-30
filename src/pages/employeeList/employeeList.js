@@ -68,7 +68,7 @@ class EmployeeList extends Component {
             <br/>
             <div className="payment-details-section">
               <details>
-                <summary>Table Details:</summary>
+                <summary className="summary-outline--hidden">Table Details:</summary>
                 <SalaryDetails total_number_of_emp={total_number_of_emp} employee_total_salary={employee_total_salary} />
               </details>
             </div>

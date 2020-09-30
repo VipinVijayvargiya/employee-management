@@ -17,7 +17,7 @@ class PayrollRecord extends Component {
 
         return (
             <div className="payroll-wrapper">
-                <b>payroll Records here</b>
+                <b>Payroll records here</b>
                 <SalaryDetails total_number_of_emp={total_number_of_emp} employee_total_salary={employee_total_salary} />
             </div>
         )
