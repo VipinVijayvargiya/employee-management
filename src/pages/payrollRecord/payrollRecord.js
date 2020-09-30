@@ -16,8 +16,8 @@ class PayrollRecord extends Component {
         let employee_total_salary = employeeData ? employeeData.map(emp => Number(emp.employee_salary)).reduce((prev, next) => prev + next) : 0;
 
         return (
-            <div>
-                <div>payroll Records here</div>
+            <div className="payroll-wrapper">
+                <b>payroll Records here</b>
                 <SalaryDetails total_number_of_emp={total_number_of_emp} employee_total_salary={employee_total_salary} />
             </div>
         )
